@@ -1,7 +1,14 @@
 #include <string.h>
+#include <Servo.h>
 
+// LED indication variables:
 int led = 9;
+
+// Variables for reading serial:
 byte buffer = 0;
+
+// Spray Trigger variables:
+int pos = 0;    // variable to store the servo position
 
 // Drive and steering motor command bytes from remote control:
 byte stop[] = {
@@ -20,7 +27,6 @@ byte suckOff[] = {
   0xFF, 0x01, 0x00, 0x00, 0xFE};
 byte suckOn[] = {
   0xFF, 0x01, 0x01, 0x00, 0xFE};
-
 
 // Wash commands from remote control:
 
@@ -42,6 +48,9 @@ int vacuumCommand = 0;
 int washCommand = 0;
 int cameraCommand = 0;
 
+// Create objects:
+Servo sprayServo
+
 void setup()
 {
 
@@ -60,6 +69,8 @@ void setup()
   delay(5000);
   //Serial2.attachInterrupt(serialInterrupt);
 
+  // Attach servos:
+  sprayServo.attach(20);  // attaches the servo on pin 20 to the servo object 
 
   // LED indicators:
   pinMode(led, OUTPUT);
