@@ -1,0 +1,75 @@
+//Define Pins
+#define RED 9
+#define GREEN 10
+#define BLUE 11
+
+void setup() 
+{
+  pinMode(RED,OUTPUT);
+  pinMode(GREEN,OUTPUT);
+  pinMode(BLUE, OUTPUT);
+  //digitalWrite(RED,LOW);
+  //digitalWrite(GREEN,LOW);
+  //digitalWrite(BLUE,LOW);
+}
+
+void error_light()
+{
+  digitalWrite(RED,HIGH);
+  delay(1000);
+  digitalWrite(RED,LOW);
+  delay(1000);
+}
+
+void overall_light()
+{
+  digitalWrite(GREEN,HIGH);
+  delay(1000);
+  digitalWrite(GREEN,LOW);
+  delay(1000);  
+}
+
+void Pressure_Sensor_On_Light()
+{
+  digitalWrite(BLUE,HIGH);
+  delay(1000);
+  digitalWrite(BLUE,LOW);
+  delay(1000);  
+}
+
+void camera_on()
+{
+  //Purple flashes for camera on 
+  digitalWrite(BLUE,HIGH);
+  digitalWrite(RED,HIGH);
+  delay(1000);
+  digitalWrite(BLUE,LOW);
+  digitalWrite(RED,LOW);
+  delay(1000);  
+}
+
+void wifi_card_on()
+{
+  // Cyan flashes for the WiFi on
+  digitalWrite(BLUE,HIGH);
+  digitalWrite(GREEN,HIGH);
+  delay(1000);
+  digitalWrite(BLUE,LOW);
+  digitalWrite(GREEN,LOW);
+  delay(1000);  
+}
+
+void motors_on()
+{
+  // White flashes for when the motors are on 
+  digitalWrite(BLUE,HIGH);
+  digitalWrite(RED,HIGH);
+  digitalWrite(GREEN,HIGH);
+  delay(1000);
+  digitalWrite(BLUE,LOW);
+  digitalWrite(RED,LOW);
+  digitalWrite(GREEN,LOW);
+  delay(1000);  
+}
+
+// Cyan = Blue/Green Purple = Red/Blue Deep Green = RED/GREEN
