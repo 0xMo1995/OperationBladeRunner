@@ -1,0 +1,43 @@
+int EnablePin1 = 8;
+int duty;
+
+int PWMPinA1 = 11;
+int PWMPinB1 = 3;
+
+const byte CPin1 = A0;
+
+int CRaw1;
+
+void setup() {
+  Serial.begin(9600);
+
+  pinMode(EnablePin1,OUTPUT); // Turn on board
+
+  pinMode(PWMPinA1,OUTPUT); // Output to Motor input A1
+  pinMode(PWMPinB1,OUTPUT); // Output to Motot inptu B1
+}
+
+void loop() {
+  digitalWrite(EnablePin1,HIGH);
+  analogWrite(PWMPinB1,0);
+  
+  for(duty = 0; duty <= 255; duty += 5)
+  {
+    analogWrite(PWMPinA1,255);
+    delay(20);
+    }
+  analogWrite(PWMPinA1,255);
+  CRaw1 = analogRead(CPin1);
+
+  Serial.println("Feedback");
+
+  delay(2000);
+
+  for (duty = 255; duty >= 0; duty -= 5) // ramp down speed
+  {
+    analogWrite(PWMPinA1, duty);
+    delay(20);
+  }
+  analogWrite(PWMPinA1, 0); //set to 0 speed
+  delay(500);
+}
