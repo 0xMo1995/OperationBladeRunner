@@ -2,6 +2,7 @@
 // Robot Hardware Configuration
 
 // Vacuum System
+
 #define ESC1_PIN 2
 #define ESC2_PIN 3
 #define INITIAL_ESC_POWER 1000 // Half of 4096
@@ -9,26 +10,20 @@
 #define MAXIMUM 3000  // This is an arbitrary uppper limit (untested)
 
 // Camera System -- ON and OFF pin
+
 #define CAMERA_PIN 10
 
-// WiFi System ----------->No Longer in Use
-//#define TX_PIN 11 // For Wi-Fi Board
-//#define RX_PIN 12 // For Wi-Fi Board
+//New Drive train system
 
-// Water Spray Trigger Pins ----------->No Longer in Use
-//#define sprayTriggerPin 20
+//#define Enable1 8
+#define A1 11
+#define B1 3
+#define A2 9
+#define B2 10
 
-// Drivetrain -----------> Old drive train no longer in use
-//
-//#define DXL_BUS_SERIAL3 3
-//
-//#define ID_Left_Wheel 0
-//#define ID_Right_Wheel 2
-//#define ID_Steer_1 1 
-//#define ID_Steer_2 3
-//
-//#define CCW_Angle_Limit 8
-//#define Goal_Postion 30
-//#define Moving_Speed 32
-//
-//#define CONTROL_MODE 11
+//transceiver
+#define Ch1 5
+#define Ch2 6
+
+//Servos
+
