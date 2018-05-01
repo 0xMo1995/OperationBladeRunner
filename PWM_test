@@ -1,0 +1,100 @@
+/*
+  DigitalReadthenWrite
+
+  PWM read from R/C receiver R9D (signal from AT9 controller) and output pwm control for robot
+ */
+
+// define channels from:
+//pins selected to keep output pwm available pins
+int ch1 = 2; //right stick horizontal movement (+) right
+int ch2 = 4; //right stick vertical (+) down
+int ch3 = 7; //left stick vertical (+) up
+int ch4 = 8; //left stick horizontal (+) right
+
+int out1 = 5; //output pwm pin 1
+int out2 = 6; //output pwm pin 2
+int out3 = 9; //output pwm pin 3
+int out4 = 10; //output pwm pin 4
+
+long int pwm1hi; // hi side pwm of r/c control (1100 - 1900)
+long int pwm2hi;
+long int pwm3hi;
+long int pwm4hi;
+
+long int pwm1out; //converted pwm1hi signal (0 - 255)
+long int pwm2out;
+long int pwm3out;
+long int pwm4out;
+
+int transx; //translation movement x
+int transy; //translation movement y
+int rotate; //
+
+
+
+
+
+// the setup routine runs once when you press reset:
+void setup() {
+  // initialize serial communication at 9600 bits per second:
+  Serial.begin(9600);
+  // make the pushbutton's pin an input:
+  pinMode(ch1, INPUT);
+  pinMode(ch2, INPUT);
+  pinMode(ch3, INPUT);
+  pinMode(ch4, INPUT);
+
+}
+
+// the loop routine runs over and over again forever:
+void loop() {
+  // read the input pin: AT9 - R9D Radiolink pulse in typical range 1100-1900 [1098 - 1903]
+
+  pwm1hi = pulseIn(ch1,HIGH);
+  pwm2hi = pulseIn(ch2,HIGH);
+  pwm3hi = pulseIn(ch3,HIGH);
+  pwm4hi = pulseIn(ch4,HIGH);
+ 
+// limit input min 1100
+ if(pwm1hi < 1100){
+    pwm1hi = 1100;  
+  }
+   if(pwm2hi < 1100){
+    pwm2hi = 1100;  
+  }
+   if(pwm3hi < 1100){
+    pwm3hi = 1100;  
+  }
+   if(pwm4hi < 1100){
+    pwm4hi = 1100;  
+  }
+
+// limit input max 1900
+  if(pwm1hi > 1900){
+    pwm1hi = 1900;  
+  }
+  if(pwm2hi > 1900){
+    pwm2hi = 1900;  
+  }
+  if(pwm3hi > 1900){
+    pwm3hi = 1900;  
+  }
+  if(pwm4hi > 1900){
+    pwm4hi = 1900;  
+  }
+  
+  //convert 800 range into 255 range for pwm output
+  pwm1out = (pwm1hi - 1100)*255/800;
+  pwm2out = (pwm2hi - 1100)*255/800;
+  pwm3out = (pwm3hi - 1100)*255/800;
+  pwm4out = (pwm4hi - 1100)*255/800;
+  
+  // print out pwm value for test
+  Serial.println(pwm1out);
+  //deadzone 120 to 130
+  // output pin switches enable
+  analogWrite(out1, pwm1out);
+  
+  
+  delay(1);        // delay in between reads for stability
+}
