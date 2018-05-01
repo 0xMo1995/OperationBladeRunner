@@ -11,14 +11,14 @@
 // Camera System -- ON and OFF pin
 #define CAMERA_PIN 10
 
-// WiFi System
+// WiFi System ----------->No Longer in Use
 //#define TX_PIN 11 // For Wi-Fi Board
 //#define RX_PIN 12 // For Wi-Fi Board
 
-// Water Spray Trigger Pins
-#define sprayTriggerPin 20
+// Water Spray Trigger Pins ----------->No Longer in Use
+//#define sprayTriggerPin 20
 
-// Drivetrain
+// Drivetrain -----------> Old drive train no longer in use
 //
 //#define DXL_BUS_SERIAL3 3
 //
