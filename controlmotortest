@@ -1,0 +1,115 @@
+/*
+  DigitalReadthenWrite
+
+  PWM read from R/C receiver R9D (signal from AT9 controller) and output pwm control for robot
+ */
+#include <Servo.h>
+
+Servo esc;
+// define channels from:
+//pins selected to keep output pwm available pins
+int ch1 = 2; //right stick horizontal movement (+) right
+int ch2 = 4; //right stick vertical (+) down
+int ch3 = 10;
+
+int out1 = 5; //output pwm pin 1
+int out2 = 6; //output pwm pin 2
+int out3 = 9;
+
+long int pwm1hi; // hi side pwm of r/c control (1100 - 1900)
+long int pwm2hi;
+long int pwm3hi;
+
+long int pwm1out; //converted pwm1hi signal (0 - 255)
+long int pwm2out;
+long int pwm3out;
+
+int EnablePin1 = 8;
+int duty;
+
+int PWMPinA1 = 11;
+int PWMPinB1 = 3;
+
+
+
+
+// the setup routine runs once when you press reset:
+void setup() {
+  // initialize serial communication at 9600 bits per second:
+  Serial.begin(9600);
+  // make the pushbutton's pin an input:
+  pinMode(ch1, INPUT);
+  pinMode(ch2, INPUT);
+  pinMode(ch3, INPUT);
+  pinMode(EnablePin1,OUTPUT); // Turn on board
+
+  pinMode(PWMPinA1,OUTPUT); // Output to Motor input A1
+  pinMode(PWMPinB1,OUTPUT); // Output to Motot inptu B1
+  digitalWrite(EnablePin1,HIGH);
+  esc.attach(out3);
+  esc.writeMicroseconds(2000);
+}
+
+// the loop routine runs over and over again forever:
+void loop() {
+  // read the input pin: AT9 - R9D Radiolink pulse in typical range 1100-1900 [1098 - 1903]
+
+  pwm1hi = pulseIn(ch1,HIGH);
+  pwm2hi = pulseIn(ch2,HIGH);
+  pwm3hi = pulseIn(ch3,HIGH);
+ 
+// limit input min 1100
+ if(pwm1hi < 1100){
+    pwm1hi = 1100;  
+  }
+   if(pwm2hi < 1100){
+    pwm2hi = 1100;  
+  }
+   if(pwm3hi < 1100){
+    pwm3hi = 1100;  
+  }
+
+// limit input max 1900
+  if(pwm1hi > 1900){
+    pwm1hi = 1900;  
+  }
+  if(pwm2hi > 1900){
+    pwm2hi = 1900;  
+  }
+  if(pwm3hi > 1900){
+    pwm3hi = 1900;  
+  }
+  
+  //convert 800 range into 511 range for pwm output (0 - 255) mid 127
+  pwm1out = (pwm1hi - 1100)*511/800;
+  pwm2out = (pwm2hi - 1100)*511/800;
+  pwm3out = (pwm3hi - 1100)*255/800;
+  
+  // print out pwm value for test
+ // Serial.println(pwm1out);
+  //deadzone 120 to 130
+  // output pin switches enable
+  //analogWrite(out1, pwm1out);
+
+
+  if(pwm1out < 230){
+  analogWrite(PWMPinA1,255-pwm1out); // coutner clockwise
+  analogWrite(PWMPinB1,0);
+  }
+  else if(pwm1out > 270){
+  analogWrite(PWMPinB1,pwm1out-256); // clockwise
+  analogWrite(PWMPinA1,0);
+  }
+  else{
+      analogWrite(PWMPinA1,0); // deadzone
+      analogWrite(PWMPinB1,0);
+    }
+  
+  //analogWrite(out3,pwm3out);
+  pwm3out = map(pwm3out,0,255,1000,3000);
+  esc.writeMicroseconds(pwm3out);
+  Serial.println(pwm3out);
+  delay(0);        // delay in between reads for stability
+}
+
+
